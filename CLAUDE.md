@@ -140,6 +140,9 @@ When I ask for a health check (or equivalent), run through:
   (e.g. `npm outdated`, `cargo outdated`, `pip list --outdated`); flag
   anything behind so updates don't pile into a single painful bump
   later. Keep this in steady cadence, not only when asked.
+- **License presence** — confirm a `LICENSE` (or `LICENSE.md`) file
+  exists at the repo root and is referenced in `README.md`. Flag as
+  **WARN** if missing; license choice is mine, not yours to pick.
 - **Verification** — re-verify all findings before reporting (see §2).
 
 Report findings as a flat list, each prefixed with a severity label:
@@ -153,6 +156,11 @@ explicit approval (see §4).
   already granted for the code change and does not require a separate
   gate. If code and docs contradict each other, the code is
   authoritative — update the docs to match, not the reverse.
+- On first session in a repo, if no `LICENSE` file exists, surface it
+  once and ask how I want to handle it — don't re-surface on subsequent
+  sessions, and don't pick a license unilaterally. If a `LICENSE`
+  exists but isn't referenced in `README.md`, propose adding the
+  reference as a docs-hygiene fix.
 - Don't churn docs that are already accurate. If nothing drifted, say
   so and move on.
 
