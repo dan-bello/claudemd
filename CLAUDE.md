@@ -13,7 +13,10 @@ invariants (component quirks, API gotchas, deliberate trade-offs)
 that this methodology file intentionally does not cover. If
 `PROJECT.md` does not yet exist, that's expected on new projects —
 proceed without it, and propose creating one when project-specific
-context surfaces that's worth preserving.
+context surfaces that's worth preserving. On an established repo
+with meaningful history and no `PROJECT.md`, surface the gap on
+first session and propose creating one before non-trivial work
+begins; don't wait for context to trickle in.
 
 Where `PROJECT.md` and this file conflict, `PROJECT.md` wins — it is
 more specific and closer to the project's ground truth. Where
@@ -34,10 +37,11 @@ acting.
   the pre-commit verification rule below, and do not treat a red
   baseline as license to commit on top of it.
 - Before committing, verify the build succeeds and tests pass —
-  project-specific commands live in `PROJECT.md`. If no test command
-  is defined in `PROJECT.md`, note the absence and skip this step;
-  do not invent or assume a test command. If tests fail, stop and
-  report; do not attempt fixes without explicit approval.
+  project-specific commands live in `PROJECT.md`. If no build or test
+  command is defined in `PROJECT.md`, note the absence and skip the
+  corresponding step; do not invent or assume commands. If the build
+  fails or tests fail, stop and report; do not attempt fixes without
+  explicit approval.
 - Commit messages: one-line subject, short body explaining the *why*
   when non-obvious.
 - Push with `git push -u origin preview`. If the push is rejected,
@@ -56,7 +60,7 @@ as facts.
 
 ## 3. Implementation standard
 
-Every change must clear all four bars before it ships:
+Every change must clear all five bars before it ships:
 
 - *Clean* — idiomatic, minimal diff, no dead code, no debug residue,
   no leftover scaffolding. The diff contains only what the change
@@ -140,9 +144,11 @@ When I ask for a health check (or equivalent), run through:
   (e.g. `npm outdated`, `cargo outdated`, `pip list --outdated`); flag
   anything behind so updates don't pile into a single painful bump
   later. Keep this in steady cadence, not only when asked.
-- **License presence** — confirm a `LICENSE` (or `LICENSE.md`) file
-  exists at the repo root and is referenced in `README.md`. Flag as
-  **WARN** if missing; license choice is mine, not yours to pick.
+- **License presence** — if the project is not proprietary: confirm a
+  `LICENSE` (or `LICENSE.md`) file exists at the repo root and is
+  referenced in `README.md`. Flag as **WARN** if missing; license
+  choice is mine, not yours to pick. If `PROJECT.md` indicates the
+  project is proprietary, skip this check entirely.
 - **Verification** — re-verify all findings before reporting (see §2).
 
 Report findings as a flat list, each prefixed with a severity label:
@@ -156,11 +162,11 @@ explicit approval (see §4).
   already granted for the code change and does not require a separate
   gate. If code and docs contradict each other, the code is
   authoritative — update the docs to match, not the reverse.
-- On first session in a repo, if no `LICENSE` file exists, surface it
-  once and ask how I want to handle it — don't re-surface on subsequent
-  sessions, and don't pick a license unilaterally. If a `LICENSE`
-  exists but isn't referenced in `README.md`, propose adding the
-  reference as a docs-hygiene fix.
+- On first session in a repo, if the project is not proprietary and
+  no `LICENSE` file exists, surface it once and ask how I want to
+  handle it — don't re-surface on subsequent sessions, and don't pick
+  a license unilaterally. If a `LICENSE` exists but isn't referenced
+  in `README.md`, propose adding the reference as a docs-hygiene fix.
 - Don't churn docs that are already accurate. If nothing drifted, say
   so and move on.
 
