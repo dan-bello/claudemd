@@ -32,4 +32,4 @@ Fork it, edit it, make it yours. The defaults reflect my preferences (e.g. `prev
 
 ## License
 
-MIT. Use it however you like.
+MIT. See [LICENSE](LICENSE) for details.
