@@ -11,12 +11,11 @@ Before acting in this repo, also read `PROJECT.md`. It holds the
 project summary, env vars, deployment notes, and the code-specific
 invariants (component quirks, API gotchas, deliberate trade-offs)
 that this methodology file intentionally does not cover. If
-`PROJECT.md` does not yet exist, that's expected on new projects —
-proceed without it, and propose creating one when project-specific
-context surfaces that's worth preserving. On an established repo
-with meaningful history and no `PROJECT.md`, surface the gap on
-first session and propose creating one before non-trivial work
-begins; don't wait for context to trickle in.
+`PROJECT.md` doesn't exist, proceed without it and propose creating
+one. On a new project, raise this when project-specific context
+worth preserving emerges; on an established repo with meaningful
+history, raise it on first session — don't wait for context to
+trickle in.
 
 Where `PROJECT.md` and this file conflict, `PROJECT.md` wins — it is
 more specific and closer to the project's ground truth. Where
@@ -48,7 +47,6 @@ acting.
   `git pull --rebase origin preview` and retry. If the rebase itself
   produces conflicts, stop and surface them — do not resolve conflicts
   unilaterally.
-- Do not commit without approval as defined in §4.
 
 ## 2. Accuracy standard
 
@@ -62,8 +60,8 @@ as facts.
 
 Every change must clear all five bars before it ships:
 
-- *Clean* — idiomatic, minimal diff, no dead code, no debug residue,
-  no leftover scaffolding. The diff contains only what the change
+- *Clean* — idiomatic, minimal diff, no leftover cruft (dead code,
+  debug residue, scaffolding). The diff contains only what the change
   requires.
 - *Efficient* — pick the cheaper equivalent when behavior is identical;
   don't make the runtime do work the build could do.
@@ -73,10 +71,10 @@ Every change must clear all five bars before it ships:
 - *Secure* — never widen the attack surface. When touching code that
   crosses a trust boundary (user input, external APIs, headers,
   secrets), name the threat in the commit body.
-- *Secrets discipline* — never commit secrets, never echo them in tool
-  output, never include them in commit messages, PR descriptions, or
-  logs. If a secret appears where it shouldn't, stop and surface it
-  before doing anything else.
+- *Secrets discipline* — never commit, echo, or log secrets
+  (including in commit messages or PR descriptions). If a secret
+  appears where it shouldn't, stop and surface it before doing
+  anything else.
 
 ## 4. Propose first, implement on explicit approval
 
@@ -98,14 +96,12 @@ Every change must clear all five bars before it ships:
   change, (2) files touched, (3) behavior change visible to the user
   or to other code, (4) blast radius and the most plausible failure
   mode. Keep it tight; this is a decision aid, not a design doc.
-- Explicit approval means "okay," "go ahead," "ship it," or any
-  unambiguous affirmative — delivered in the current session, in the
-  same thread where the change was proposed. Approval from a prior
-  session, a separate PR comment, or any other context does not carry
-  forward. Context compaction expires approval: if the conversation
-  has been compacted since approval was given, treat it as no longer
-  in force and re-confirm. When in doubt, re-confirm. This definition
-  applies to both implementation and commits.
+- Explicit approval means an unambiguous affirmative ("okay," "go
+  ahead," "ship it") in the current session, in the same thread
+  where the change was proposed. Approval doesn't carry across
+  sessions, PR threads, or context compaction — if the conversation
+  has been compacted since approval was given, re-confirm. When in
+  doubt, re-confirm. Applies to both implementation and commits.
 - Reverts follow the same gate: propose the revert, state why, and
   wait for approval before executing.
 - If something unexpected surfaces mid-task — a related bug, a
