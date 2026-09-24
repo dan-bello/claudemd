@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-A portable `CLAUDE.md` — the standing methodology file I drop into every repo I use with [Claude Code](https://www.anthropic.com/product/claude-code). Sharing it here so it's easy to grab, and in case anyone else finds it useful.
+A portable `CLAUDE.md` — the standing methodology file I drop into every repo I use with [Claude Code](https://claude.com/product/claude-code). Sharing it here so it's easy to grab, and in case anyone else finds it useful.
 
 > This is a living document — I update it as my workflow evolves. Pin to a commit if you want stability.
 
@@ -9,26 +9,26 @@ A portable `CLAUDE.md` — the standing methodology file I drop into every repo 
 A compact set of defaults covering the parts of working with Claude Code that benefit from being written down once:
 
 - branch and workflow rules
-- accuracy and implementation standards
+- accuracy, implementation, and secrets standards
 - a propose-first gate for non-trivial changes
 - a reusable health-check routine
 - documentation hygiene and tone
 
-It's opinionated and terse on purpose — guardrails that help without getting in the way or spending tokens unnecessarily.
+It's opinionated and terse on purpose — guardrails that help without slowing you down, over-restricting, or spending tokens unnecessarily.
 
 ## How to use it
 
 1. Copy `CLAUDE.md` into the root of your repo.
-2. (Recommended) Create a `PROJECT.md` next to it with project-specific context: build and test commands, env vars, component quirks, deliberate trade-offs, and whether the project is proprietary.
-3. Commit both. Claude Code reads `CLAUDE.md` on every session, and `CLAUDE.md` pulls in `PROJECT.md` with an `@PROJECT.md` import, so keep both in the repo root.
+2. (Recommended) Create a `PROJECT.md` next to it with project-specific context: build and test commands, env vars, component quirks, deliberate trade-offs, and whether the project is proprietary. If it's missing, Claude will offer to create one; an empty `PROJECT.md` opts out.
+3. Commit both. Claude Code reads `CLAUDE.md` on every session, and `CLAUDE.md` pulls in `PROJECT.md` with an `@PROJECT.md` import, so keep the two side by side.
 
 ## Why PROJECT.md
 
-`CLAUDE.md` intentionally stays generic so it's portable across every repo. Anything project-specific — the test command, the deploy process, the weird edge case in module X — belongs in `PROJECT.md`. Where the two overlap, `PROJECT.md` wins. It's closer to ground truth.
+`CLAUDE.md` intentionally stays generic so it's portable across every repo. Anything project-specific — the test command, the deploy process, the weird edge case in module X — belongs in `PROJECT.md`. Where the two overlap, `PROJECT.md` wins. It's closer to ground truth. It also loads every session, so keep it lean.
 
 ## Customizing
 
-Fork it, edit it, make it yours. The defaults reflect my preferences (e.g. `preview` as the working branch, propose-first for non-trivial changes, one approval covering commit and push). Swap them to fit your own workflow. If you rename the working branch, update it in §1, §4, and §5.
+Fork it, edit it, make it yours. The defaults reflect my preferences (e.g. `preview` as the default working branch, propose-first for non-trivial changes, one approval covering commit and push). Swap them to fit your own workflow. If you use a different default working branch, change `preview` in §1; the rest of the file refers to it as "the working branch." If your integration branch isn't `main`, change it in §1 and §5.
 
 ## License
 

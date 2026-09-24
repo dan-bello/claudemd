@@ -19,15 +19,15 @@ preserving emerges; on an established repo with meaningful history,
 right away. An empty `PROJECT.md` means I've opted out.
 
 Where `PROJECT.md` and this file conflict, `PROJECT.md` wins — it is
-more specific and closer to the project's ground truth. Where it is
-silent on a topic, fall back to this file. If neither covers it,
-surface the gap and ask before acting.
+closer to the project's ground truth.
 
 ## 1. Branch and workflow
 
-- The working branch is `preview`; all day-to-day changes land there.
-  `main` is updated from `preview` via PR, on my cadence — never push
-  to it directly.
+- The working branch is `preview`, unless I've set up a different
+  branch for the task or you've created one with my confirmation. All
+  changes land on the working branch. `main` is updated from `preview`
+  via PR, on my cadence — never push to it directly, and don't merge
+  the working branch into another branch yourself.
 - Don't create new branches without confirming with me first.
 - Never force-push or rewrite pushed history. Destructive local
   commands (`reset --hard`, `clean`, `branch -D`, discarding
@@ -41,16 +41,15 @@ surface the gap and ask before acting.
   of it.
 - Before committing, run them again. If a failure comes from your own
   change, fixing it within the approved scope is fine; if the fix
-  would go beyond that scope, stop and report. Test changes belong in
-  the proposal: list tests you'll add, change, or remove, and why.
-  Never skip, weaken, or delete a test just to make a failing run
-  pass.
+  would go beyond that scope, stop and report. Never skip, weaken, or
+  delete a test just to make a failing run pass.
+- Docs-only changes can skip both runs.
 - Commit messages: one-line subject, short body explaining the *why*
   when non-obvious.
-- Push with `git push -u origin preview`. If the push is rejected,
-  `git pull --rebase origin preview` and retry. If the rebase itself
-  produces conflicts, stop and surface them — don't resolve conflicts
-  unilaterally.
+- Push with `git push -u origin <working-branch>`. If the push is
+  rejected, `git pull --rebase origin <working-branch>` and retry. If
+  the rebase itself produces conflicts, stop and surface them — don't
+  resolve conflicts unilaterally.
 
 ## 2. Accuracy standard
 
@@ -95,17 +94,17 @@ Every change must clear all five bars before it ships:
   removing, or major-bumping a dependency never qualifies.
 - For large or multi-phase tasks, propose a phased plan and get
   approval before each phase; don't run ahead.
-- Proposal shape: (1) one-line summary, (2) files touched, (3)
-  behavior change visible to users or other code, (4) blast radius and
-  the most plausible failure mode. Keep it tight; this is a decision
-  aid, not a design doc.
+- Proposal shape: (1) one-line summary, (2) files touched, including
+  tests added, changed, or removed and why, (3) behavior change
+  visible to users or other code, (4) blast radius and the most
+  plausible failure mode. Keep it tight; this is a decision aid, not a
+  design doc.
 - Explicit approval means an unambiguous affirmative ("okay," "go
-  ahead," "ship it") in the current session, in the thread where the
-  change was proposed. One approval covers the change as proposed,
-  its commit, and the push to `preview` — no separate gate for either.
-  Approval doesn't carry across sessions, PR threads, or context
-  compaction; if the conversation has been compacted since approval,
-  re-confirm. When in doubt, re-confirm.
+  ahead," "ship it") given after the proposal, in the same session and
+  thread. One approval covers the change as proposed, its commit, and
+  the push to the working branch. It doesn't survive a new session, a
+  different PR thread, or context compaction; when in doubt,
+  re-confirm.
 - Approval extends to subagents you hand the approved work to; state
   the approved scope in the delegation.
 - Reverts follow the same gate: propose the revert, state why, and
@@ -126,10 +125,11 @@ Every change must clear all five bars before it ships:
 ## 5. Health check
 
 When I ask for a health check, audit and report; this is analysis
-only, so don't modify files, commit, or install tools. By default, scope
-it to what's on `preview` but not yet in `main`, plus anything that
-code touches; audit the whole repo when I ask for a full check or
-when `preview` matches `main`. Cover:
+only, so don't modify files, commit, or install tools. By default,
+scope it to what's on the working branch but not yet in the branch it
+merges into — `main`, or for a task branch, usually the branch it was
+cut from — plus anything that code touches; audit the whole repo when
+I ask for a full check or when there's nothing to diff. Cover:
 
 - build and tests; drift between code and docs
 - flawed logic: races, off-by-ones, wrong assumptions, silent failures
