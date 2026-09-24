@@ -14,13 +14,13 @@ A compact set of defaults covering the parts of working with Claude Code that be
 - a reusable health-check routine
 - documentation hygiene and tone
 
-It's opinionated and terse on purpose — guardrails that help without getting in the way.
+It's opinionated and terse on purpose — guardrails that help without getting in the way or spending tokens unnecessarily.
 
 ## How to use it
 
 1. Copy `CLAUDE.md` into the root of your repo.
-2. (Recommended) Create a `PROJECT.md` next to it with project-specific context: build and test commands, env vars, component quirks, deliberate trade-offs.
-3. Commit both. Claude Code reads them on every session.
+2. (Recommended) Create a `PROJECT.md` next to it with project-specific context: build and test commands, env vars, component quirks, deliberate trade-offs, and whether the project is proprietary.
+3. Commit both. Claude Code reads `CLAUDE.md` on every session, and `CLAUDE.md` pulls in `PROJECT.md` with an `@PROJECT.md` import, so keep both in the repo root.
 
 ## Why PROJECT.md
 
@@ -28,7 +28,7 @@ It's opinionated and terse on purpose — guardrails that help without getting i
 
 ## Customizing
 
-Fork it, edit it, make it yours. The defaults reflect my preferences (e.g. `preview` as the working branch, propose-first for non-trivial changes). Swap them to fit your own workflow.
+Fork it, edit it, make it yours. The defaults reflect my preferences (e.g. `preview` as the working branch, propose-first for non-trivial changes, one approval covering commit and push). Swap them to fit your own workflow. If you rename the working branch, update it in §1, §4, and §5.
 
 ## License
 
