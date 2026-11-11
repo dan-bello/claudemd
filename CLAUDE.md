@@ -1,10 +1,10 @@
 # CLAUDE.md
 
-Standing methodology for Claude Code sessions on my projects. These are defaults; deviations need explicit direction. If a request conflicts with this file, flag the conflict before proceeding — never silently comply.
+Standing methodology for Claude Code sessions on my projects. These are defaults; deviations need explicit direction. If a request conflicts with this file and I've clearly asked for the deviation, note it in one line and proceed; if the conflict looks accidental, flag it and wait. Never comply silently. Never edit this file unless I explicitly ask.
 
 ## Project-specific context
 
-`PROJECT.md` (imported at the end) holds project specifics: summary, build and test commands, env vars, deployment notes, and code-level invariants (component quirks, API gotchas, deliberate trade-offs). It wins any conflict with this file — it's closer to ground truth.
+`PROJECT.md` (imported at the end) holds project specifics: summary, build, test, and CI-status commands, env vars, deployment notes, and code-level invariants (component quirks, API gotchas, deliberate trade-offs). It wins any conflict with this file — it's closer to ground truth.
 
 If its contents aren't in context, check whether it exists. If not, proceed without it and offer to create one, once per session — immediately on an established repo, or once context worth keeping emerges on a new one. An empty `PROJECT.md` means I've opted out.
 
@@ -14,11 +14,11 @@ If its contents aren't in context, check whether it exists. If not, proceed with
 - Don't create branches without confirming with me first.
 - Never force-push or rewrite pushed history. Destructive local commands (`reset --hard`, `clean`, `branch -D`, discarding uncommitted work) need explicit approval.
 - Build and test commands come from `PROJECT.md`. If one isn't defined, note it and skip that step — don't invent commands.
-- Baseline: run build and tests before the session's first change. Start them while preparing the first proposal and include the result in it (or in your report, if the change needs no proposal). If red, stop for direction — don't fix unrelated breakage or commit on top of it.
-- While iterating, use the narrowest relevant test command `PROJECT.md` offers. Before committing, you need a full green build-and-test run that postdates your last edit; don't rerun if you already have one.
+- Baseline: before the session's first change, you need a green build-and-test result for the current HEAD. Reuse one if the tree is clean and CI is green on HEAD (status command from `PROJECT.md`). Otherwise, or if no status command is defined, run both: start them while preparing the first proposal and include the result in it (or in your report, if the change needs no proposal). If red, stop for direction — don't fix unrelated breakage or commit on top of it.
+- While iterating, use the narrowest relevant test command `PROJECT.md` offers, and commit once it passes. Before pushing, you need a full green build-and-test run that postdates your last edit; one run covers every commit in the push, and you don't rerun if you already have one. If it's red, fix it before pushing, folding the fix into the unpushed commit it belongs to.
 - Fix failures your change caused within approved scope; if the fix needs more, stop and report. Never skip, weaken, or delete a test to get green.
-- Docs-only changes skip build and test runs.
-- Commits: one-line subject; short body for the *why* when non-obvious.
+- Docs-only changes skip the baseline and all build and test runs.
+- Commits: one per approved proposal; one-line subject; short body for the *why* when non-obvious.
 - Push with `git push -u origin <working-branch>`. If rejected, `git pull --rebase origin <working-branch>`. If the rebase conflicts, stop and surface it — don't resolve conflicts yourself. Otherwise, if the incoming commits touch more than docs, rerun build and tests (stop and report on failure), then push.
 
 ## 2. Accuracy standard
@@ -37,13 +37,13 @@ Every change clears all five bars:
 
 ## 4. Propose first, implement on explicit approval
 
-Analysis, review, and research are always in scope; edits need approval unless they qualify below. Minimize round trips: any message that needs my input should contain everything I need to decide.
+Analysis, review, and research are always in scope; run independent read-only investigation in parallel. Edits need approval unless they qualify below. Minimize round trips: any message that needs my input should contain everything I need to decide.
 
 - *Ambiguity:* resolve it before starting, never midway. If one reading is clearly likeliest, include its proposal with the question so one reply settles both. When proceeding on an assumption, state it at the top.
 - *Proposal shape:* (1) one-line summary, (2) files touched, including tests added, changed, or removed and why, (3) behavior change visible to users or other code, (4) blast radius and most plausible failure mode. Scale it to the change — a small fix can be four short lines.
 - *Batching:* number independent proposals so I can approve any subset in one reply. Multi-phase work gets a phased plan; approval covers only the phases I name, and you don't run ahead.
 - *Explicit approval* is an unambiguous affirmative ("okay," "go ahead," "ship it") after the proposal, in the same session and thread. It covers the change as proposed, its commit, and the push to the working branch, and extends to subagents (state the approved scope in the delegation). It doesn't survive a new session, a different PR thread, or context compaction; when in doubt, re-confirm.
-- *Skip the proposal* when I've specified the exact change — what and where, with no design choices left to you — or when it's low-risk: touches a single function or self-contained block, crosses no external interface or shared-state boundary, and changes no behavior visible outside that scope. These count as approved, commit and push included; note what you did and why it qualified. If an exact-spec request carries a risk I likely missed, flag it and wait for my reply before making the change. When unsure whether a request is exact, propose. Dependency changes (add, remove, major bump) never qualify as low-risk; they skip the proposal only when I've specified them exactly.
+- *Skip the proposal* when I've specified the exact change — what and where, with no design choices left to you — or when it's low-risk: touches a single function or self-contained block, crosses no external interface or shared-state boundary, and changes no behavior visible outside that scope. Two classes always count as low-risk: corrections to docs or comments (typos, drift from code), and added tests that change no non-test code, shared fixtures, or test config. All of these count as approved, commit and push included; note what you did and why it qualified. If an exact-spec request carries a risk I likely missed, flag it and wait for my reply before making the change. When unsure whether a request is exact, propose. Dependency changes (add, remove, major bump) never qualify as low-risk; they skip the proposal only when I've specified them exactly.
 - *Reverts you'd initiate* follow the full gate: propose, say why, wait.
 - *Mid-task surprises* (a related bug, an unexpected dependency, a conflict): if it affects the approved change's correctness, safety, or blast radius — or you can't rule that out — pause and surface it. Otherwise finish the approved scope and report it at the end. Never silently expand scope, even for a conservative fix.
 - *Recommendations:* when a fix is confirmed real, analyzed for blast radius and failure modes, and a net improvement, recommend it plainly. Don't hedge once the analysis is done, and don't hide behind the approval rule to avoid making a call.
